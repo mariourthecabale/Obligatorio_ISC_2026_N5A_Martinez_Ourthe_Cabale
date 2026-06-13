@@ -99,7 +99,7 @@ resource "aws_route_table" "TF-RT-Public" {
   }
 }
 
-## Creamos asociación de Route Table para la Subnet Pública
+## Asociamos Route Table para la Subnet Pública
 resource "aws_route_table_association" "TF-RT-Public" {
   count = length(var.azs)
 
@@ -123,7 +123,7 @@ resource "aws_route_table" "TF-RT-Private" {
   }
 }
 
-## Creamos Route Table para la Subnet Privada de la APP
+## Asociamos Route Table para la Subnet Privada de la APP
 resource "aws_route_table_association" "TF-RT-Private-APP" {
   count = length(var.azs)
 
@@ -131,7 +131,7 @@ resource "aws_route_table_association" "TF-RT-Private-APP" {
   route_table_id = aws_route_table.TF-RT-Private[count.index].id
 }
 
-## Creamos Route Table para la Subnet Privada de la DB
+## Asociamos Route Table para la Subnet Privada de la DB
 resource "aws_route_table_association" "TF-RT-Private-DB" {
   count = length(var.azs)
 
