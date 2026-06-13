@@ -17,26 +17,13 @@ resource "aws_security_group" "TF-SG-ALB" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-
-    description = "HTTPS"
-
-    from_port = 443
-    to_port   = 443
-
-    protocol = "tcp"
-
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
+  
   egress {
-
-    from_port = 0
-    to_port   = 0
-
-    protocol = "-1"
-
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "HTTP hacia EC2"
+    from_port       = var.app_port
+    to_port         = var.app_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.TF-SG-EC2.id]
   }
 
   tags = {

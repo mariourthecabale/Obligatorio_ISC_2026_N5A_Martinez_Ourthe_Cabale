@@ -30,3 +30,14 @@ module "networking" {
     var.private_subnet_DB_2
   ]
 }
+
+## Modulo donde se crean los SG para el ALB, EC2 y RDS
+module "security_groups" {
+  source = "./modules/secuity-groups"
+
+  name   = var.name
+  vpc_id = module.networking.vpc_id
+
+  app_port = var.app_port
+  db_port  = var.db_port
+}

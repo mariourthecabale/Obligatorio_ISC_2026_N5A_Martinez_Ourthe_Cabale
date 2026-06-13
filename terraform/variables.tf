@@ -52,3 +52,18 @@ variable "private_subnet_DB_2" {
   type        = string
   description = "Subnet privada DB en segunda AZ"
 }
+
+variable "name" {
+  type = string
+  description = "Obligatorio"
+}
+
+variable "app_port" {
+  type    = number
+  default = 80
+}
+
+variable "db_port" {
+  type    = number
+  default = 3306
+}
