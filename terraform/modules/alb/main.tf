@@ -1,7 +1,7 @@
 ## Creamos ALB
 resource "aws_lb" "TF-ALB-Obligatorio" {
 
-  name               = "alb-${var.name_alb}"
+  name               = "alb-${var.name}"
   internal           = false
   load_balancer_type = "application"
 
@@ -14,14 +14,14 @@ resource "aws_lb" "TF-ALB-Obligatorio" {
   enable_cross_zone_load_balancing = true
 
   tags = {
-    Name = "AWS-${var.name_alb}-ALB"
+    Name = "AWS-${var.name}-ALB"
   }
 }
 
 ##Creamos taret-groups
 resource "aws_lb_target_group" "TF-TG-Obligatorio" {
 
-  name     = "tg-${var.name_alb}"
+  name     = "tg-${var.name}"
   port     = 80
   protocol = "HTTP"
 
@@ -44,7 +44,7 @@ resource "aws_lb_target_group" "TF-TG-Obligatorio" {
   }
 
   tags = {
-    Name = "AWS-${var.name_alb}-TG"
+    Name = "AWS-${var.name}-TG"
   }
 }
 

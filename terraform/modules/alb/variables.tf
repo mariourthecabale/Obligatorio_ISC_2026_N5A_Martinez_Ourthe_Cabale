@@ -1,5 +1,5 @@
 ##Variable para nombre ALB
-variable "name_alb" {
+variable "name" {
   type = string
 }
 
