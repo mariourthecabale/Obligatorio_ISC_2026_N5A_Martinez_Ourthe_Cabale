@@ -21,13 +21,13 @@ resource "aws_lb" "TF-ALB-Obligatorio" {
 ## Creamos target-groups para el ALB, que serán los encargados de enrutar el tráfico a las instancias EC2
 resource "aws_lb_target_group" "TF-TG-Obligatorio" {
 
- 
+
   name     = "tg-${var.name}"
   port     = var.target_group_port
   protocol = var.target_group_protocol
-  vpc_id = var.vpc_id
+  vpc_id   = var.vpc_id
 
-## Configuración del health check para el target group
+  ## Configuración del health check para el target group
   health_check {
 
     enabled = var.health_check_enabled

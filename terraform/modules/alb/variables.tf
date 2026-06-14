@@ -1,6 +1,6 @@
 ##Variable para nombre ALB
 variable "name" {
-    type = string
+  type = string
 }
 
 ## Variable para VPC

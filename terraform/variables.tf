@@ -1,43 +1,43 @@
 ## Variables para la configuración de AWS y la infraestructura
 ## Variable para la región de AWS
 variable "aws_region" {
-  type = string
+  type        = string
   description = "Variable para la region"
 }
 
 ## Variable para la elección de la AMI
 variable "ami" {
-  type = string
+  type        = string
   description = "Variable para eleccion de la ami"
 }
 
 ## Variables para la configuración de la VPC, subnets y AZs
 variable "vpc_cidr" {
-  type = string
+  type        = string
   description = "Variable para el CIDR block"
 }
 
 ## Variable para la subnet privada de la APP
 variable "private_subnet_APP" {
-  type = string
+  type        = string
   description = "Variable para la subnet privada de la APP"
 }
 
 ## Variable para la subnet privada de la Base de Datos
 variable "private_subnet_DB" {
-  type = string
+  type        = string
   description = "Variable para la subnet privada de la Base de Datos"
 }
 
 ## Variable para la subnet pública
 variable "public_subnet" {
-  type = string
+  type        = string
   description = "Variable para la subnet publica"
 }
 
 ## Variable para el AZ
 variable "vpc_aws_az" {
-  type = string
+  type        = string
   description = "Variable para la az"
 }
 
@@ -67,86 +67,86 @@ variable "private_subnet_DB_2" {
 
 ## Variables para la configuración del ALB
 variable "alb_name" {
-  type = string
+  type        = string
   description = "Variable para el nombre del ALB"
 }
 
 ## Variables para la configuración del Target Group
 variable "target_group_port" {
-  type = number
+  type        = number
   description = "Variable para el puerto del Target Group"
 }
 
 ## Variable para el protocolo del Target Group
 variable "target_group_protocol" {
-  type = string
+  type        = string
   description = "Variable para el protocolo del Target Group"
 }
 
 ## Variables para la configuración del Listener
 variable "listener_port" {
-  type = number
+  type        = number
   description = "Variable para el puerto del Listener"
 }
 
 ## Variable para el protocolo del Listener
 variable "listener_protocol" {
-  type = string
+  type        = string
   description = "Variable para el protocolo del Listener"
 }
 
 ## Variables para la configuración del health check del Target Group
 variable "health_check_enabled" {
-  type = bool
+  type        = bool
   description = "Variable para habilitar o deshabilitar el health check del Target Group"
 }
 
 ## Variable para el protocolo del health check del Target Group
 variable "health_check_protocol" {
-  type = string
+  type        = string
   description = "Variable para el protocolo del health check del Target Group"
 }
 
 ## Variable para el path del health check del Target Group
 variable "health_check_path" {
-  type = string
+  type        = string
   description = "Variable para el path del health check del Target Group"
 }
 
 ## Variables para la configuración del health check del Target Group
 variable "health_check_interval" {
-  type = number
+  type        = number
   description = "Variable para el intervalo del health check del Target Group"
 }
 
 ## Variable para el timeout del health check del Target Group
 variable "health_check_timeout" {
-  type = number
+  type        = number
   description = "Variable para el timeout del health check del Target Group"
 }
 
 ## Variable para el umbral de healthy del health check del Target Group
 variable "health_check_healthy_threshold" {
-  type = number
+  type        = number
   description = "Variable para el umbral de healthy del health check del Target Group"
 }
 
 ## Variable para el umbral de unhealthy del health check del Target Group
 variable "health_check_unhealthy_threshold" {
-  type = number
+  type        = number
   description = "Variable para el umbral de unhealthy del health check del Target Group"
 }
 
 ## Variable para el matcher del health check del Target Group
 variable "health_check_matcher" {
-  type = string
+  type        = string
   description = "Variable para el matcher del health check del Target Group"
 }
 
 ## Variable para el nombre del proyecto, que se usará para taggear los recursos
 variable "name" {
-  type    = string
-  default = "Obligatorio"
+  type        = string
+  default     = "Obligatorio"
   description = "Nombre del proyecto para taggear los recursos"
 }
 
