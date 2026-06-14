@@ -1,3 +1,4 @@
+## Variables para el módulo de Auto Scaling Group (ASG)
 variable "name" {
   type = string
 }

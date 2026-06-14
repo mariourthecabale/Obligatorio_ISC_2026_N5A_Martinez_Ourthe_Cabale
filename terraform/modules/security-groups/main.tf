@@ -1,22 +1,18 @@
-##SG para ALB
+## Security Group para ALB
 resource "aws_security_group" "TF-SG-ALB" {
 
-  name        = "AWS-${var.name}-SG-ALB"
+  name        = "AWS-${var.project_name}-SG-ALB"
   description = "Security Group para ALB"
   vpc_id      = var.vpc_id
 
   ingress {
 
-    description = "HTTP"
-
-    from_port = 80
-    to_port   = 80
-
-    protocol = "tcp"
-
-    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP/HTTPS desde Internet"
+    from_port   = var.alb_ingress_port
+    to_port     = var.alb_ingress_port
+    protocol    = var.alb_ingress_protocol
+    cidr_blocks = var.alb_ingress_cidr_blocks
   }
-
 
   egress {
 
@@ -28,14 +24,14 @@ resource "aws_security_group" "TF-SG-ALB" {
 }
 
   tags = {
-    Name = "AWS-${var.name}-SG-ALB"
+    Name = "AWS-${var.project_name}-SG-ALB"
   }
 }
 
-##SG para EC2
+## Security Group para EC2
 resource "aws_security_group" "TF-SG-EC2" {
 
-  name        = "AWS-${var.name}-SG-EC2"
+  name        = "AWS-${var.project_name}-SG-EC2"
   description = "Security Group para EC2"
   vpc_id      = var.vpc_id
 
@@ -64,14 +60,14 @@ resource "aws_security_group" "TF-SG-EC2" {
   }
 
   tags = {
-    Name = "AWS-${var.name}-SG-EC2"
+    Name = "AWS-${var.project_name}-SG-EC2"
   }
 }
 
-##SG para RDS
+## Security Group para RDS
 resource "aws_security_group" "TF-SG-RDS" {
 
-  name        = "AWS-${var.name}-SG-RDS"
+  name        = "AWS-${var.project_name}-SG-RDS"
   description = "Security Group para RDS"
   vpc_id      = var.vpc_id
 
@@ -100,6 +96,6 @@ resource "aws_security_group" "TF-SG-RDS" {
   }
 
   tags = {
-    Name = "AWS-${var.name}-SG-RDS"
+    Name = "AWS-${var.project_name}-SG-RDS"
   }
 }

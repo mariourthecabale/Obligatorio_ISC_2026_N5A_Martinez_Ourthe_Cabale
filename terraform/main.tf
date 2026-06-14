@@ -35,7 +35,7 @@ module "networking" {
 module "security_groups" {
   source = "./modules/security-groups"
 
-  name   = var.name
+  name   = var.project_name
   vpc_id = module.networking.vpc_id
 
   app_port = var.app_port
@@ -51,17 +51,17 @@ module "alb" {
   alb_security_group_id = module.security_groups.alb_sg_id
 }
 
+## Módulo de ASG donde se crea el Auto Scaling Group y su Launch Template, utilizando la AMI y el tipo de instancia definidos en las variables, además de asociar el ASG al Target Group del ALB y al SG de EC2
 module "ec2_asg" {
 
   source = "./modules/asg"
 
-  name = var.name
-
+  name = var.project_name
   ami = var.ami
 
   private_subnet_ids = module.networking.private_app_subnet_ids
-
+  
   ec2_security_group_id = module.security_groups.ec2_sg_id
-
+  
   target_group_arn = module.alb.target_group_arn
 }

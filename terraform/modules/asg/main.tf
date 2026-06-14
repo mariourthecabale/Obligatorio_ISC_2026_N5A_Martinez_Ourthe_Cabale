@@ -1,6 +1,7 @@
+## Main del módulo ASG que contiene el Launch Template y el Auto Scaling Group.
 resource "aws_launch_template" "TF-LT-Obligatorio" {
 
-  name_prefix = "AWS-${var.name}-LT-"
+  name_prefix = "AWS-${var.name}-LT"
 
   image_id      = var.ami
   instance_type = var.instance_type
