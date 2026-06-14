@@ -149,3 +149,14 @@ variable "name" {
   default = "Obligatorio"
   description = "Nombre del proyecto para taggear los recursos"
 }
+
+variable "app_port" {
+  type    = number
+  default = 80
+}
+
+variable "db_port" {
+  type    = number
+  default = 3306
+}
+

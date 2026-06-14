@@ -31,10 +31,21 @@ module "networking" {
   ]
 }
 
+## Modulo donde se crean los SG para el ALB, EC2 y RDS
+module "security_groups" {
+  source = "./modules/secuity-groups"
+
+  name   = var.name
+  vpc_id = module.networking.vpc_id
+
+  app_port = var.app_port
+  db_port  = var.db_port
+}
+
 ### Módulo de ALB donde se crea el Application Load Balancer, su Target Group y su Listener
 module "alb" {
   source = "./modules/alb"
-  name_alb = "Obligatorio"
+  name = "Obligatorio"
   vpc_id = module.networking.vpc_id
   public_subnet_ids = module.networking.public_subnet_ids
   alb_security_group_id = module.networking.alb_security_group_id
