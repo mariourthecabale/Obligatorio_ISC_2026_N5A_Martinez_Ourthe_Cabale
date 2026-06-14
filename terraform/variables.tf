@@ -140,7 +140,7 @@ variable "health_check_matcher" {
 }
 
 ## Variable para el nombre del proyecto, que se usará para taggear los recursos
-variable "name" {
+variable "project_name" {
   description = "Nombre del proyecto para taggear los recursos"
   type        = string
   default     = "Obligatorio"

@@ -57,6 +57,7 @@ variable "alb_ingress_port" {
     condition     = var.alb_ingress_port > 0 && var.alb_ingress_port < 65536
     error_message = "alb_ingress_port debe ser un número entre 1 y 65535."
   }
+}
 
 ## Variable para el protocolo de ingreso permitido al ALB
 variable "alb_ingress_protocol" {
