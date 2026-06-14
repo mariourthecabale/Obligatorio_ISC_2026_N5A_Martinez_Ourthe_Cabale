@@ -1,4 +1,4 @@
-## Creamos ALB
+## Creamos ALB y sus componentes asociados (Target Group y Listener)
 resource "aws_lb" "TF-ALB-Obligatorio" {
 
   name               = "alb-${var.name}"
@@ -18,29 +18,30 @@ resource "aws_lb" "TF-ALB-Obligatorio" {
   }
 }
 
-##Creamos taret-groups
+## Creamos target-groups para el ALB, que serán los encargados de enrutar el tráfico a las instancias EC2
 resource "aws_lb_target_group" "TF-TG-Obligatorio" {
 
+ 
   name     = "tg-${var.name}"
-  port     = 80
-  protocol = "HTTP"
-
+  port     = var.target_group_port
+  protocol = var.target_group_protocol
   vpc_id = var.vpc_id
 
+## Configuración del health check para el target group
   health_check {
 
-    enabled = true
+    enabled = var.health_check_enabled
 
-    protocol = "HTTP"
+    protocol = var.health_check_protocol
 
-    path = "/"
+    path = var.health_check_path
 
-    interval            = 30
-    timeout             = 5
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
+    interval            = var.health_check_interval
+    timeout             = var.health_check_timeout
+    healthy_threshold   = var.health_check_healthy_threshold
+    unhealthy_threshold = var.health_check_unhealthy_threshold
 
-    matcher = "200"
+    matcher = var.health_check_matcher
   }
 
   tags = {
@@ -48,14 +49,13 @@ resource "aws_lb_target_group" "TF-TG-Obligatorio" {
   }
 }
 
-
-##Creamos Listener
+## Creamos Listener para el ALB que escuchará en el puerto 80 y redirigirá el tráfico al target group creado anteriormente
 resource "aws_lb_listener" "TF-Listener-HTTP" {
 
   load_balancer_arn = aws_lb.TF-ALB-Obligatorio.arn
 
-  port     = 80
-  protocol = "HTTP"
+  port     = var.listener_port
+  protocol = var.listener_protocol
 
   default_action {
 
