@@ -33,7 +33,7 @@ module "networking" {
 
 ## Modulo donde se crean los SG para el ALB, EC2 y RDS
 module "security_groups" {
-  source = "./modules/secuity-groups"
+  source = "./modules/security-groups"
 
   name   = var.name
   vpc_id = module.networking.vpc_id
@@ -48,18 +48,18 @@ module "alb" {
   name = "Obligatorio"
   vpc_id = module.networking.vpc_id
   public_subnet_ids = module.networking.public_subnet_ids
-  alb_security_group_id = module.networking.alb_security_group_id
+  alb_security_group_id = module.security_groups.alb_sg_id
 }
 
 module "ec2_asg" {
 
-  source = "../../modules/ec2_asg"
+  source = "../../modules/asg"
 
   name = var.name
 
-  ami_id = var.ami_id
+  ami_id = var.ami
 
-  private_subnet_ids = module.vpc.private_app_subnet_ids
+  private_subnet_ids = module.networking.private_app_subnet_ids
 
   ec2_security_group_id = module.security_groups.ec2_sg_id
 
