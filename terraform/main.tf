@@ -35,7 +35,7 @@ module "networking" {
 module "security_groups" {
   source = "./modules/security-groups"
 
-  name   = var.project_name
+  project_name   = var.project_name
   vpc_id = module.networking.vpc_id
 
   app_port = var.app_port

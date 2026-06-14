@@ -1,4 +1,5 @@
 ## Main del módulo ASG que contiene el Launch Template y el Auto Scaling Group.
+## El Launch Template define la configuración de las instancias EC2, incluyendo el user data para instalar Docker y ejecutar un contenedor Nginx.
 resource "aws_launch_template" "TF-LT-Obligatorio" {
 
   name_prefix = "AWS-${var.name}-LT"
@@ -32,14 +33,15 @@ EOF
     resource_type = "instance"
 
     tags = {
-      Name = "AWS-${var.name}-EC2"
+      Name = "${var.name}-EC2"
     }
   }
 }
 
+## Auto Scaling Group que utiliza el Launch Template definido anteriormente.
 resource "aws_autoscaling_group" "TF-ASG-Obligatorio" {
 
-  name = "AWS-${var.name}-ASG"
+  name = "${var.name}-ASG"
 
   min_size         = 2
   max_size         = 4
@@ -62,7 +64,7 @@ resource "aws_autoscaling_group" "TF-ASG-Obligatorio" {
   tag {
 
     key                 = "Name"
-    value               = "AWS-${var.name}-EC2"
+    value               = "${var.name}-EC2"
     propagate_at_launch = true
   }
 }

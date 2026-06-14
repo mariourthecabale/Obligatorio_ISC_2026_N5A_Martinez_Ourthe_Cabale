@@ -1,13 +1,16 @@
+## Variable para la región de AWS
 variable "aws_region" {
   description = "Variable para la region"
   type        = string
 }
 
+## Variable para la elección de la AMI
 variable "ami" {
   description = "Variable para eleccion de la ami"
   type        = string
 }
 
+## Variable para el CIDR block de la VPC
 variable "vpc_cidr" {
   description = "Variable para el CIDR block"
   type        = string
