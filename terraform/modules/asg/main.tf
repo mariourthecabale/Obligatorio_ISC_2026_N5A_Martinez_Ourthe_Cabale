@@ -2,7 +2,7 @@ resource "aws_launch_template" "TF-LT-Obligatorio" {
 
   name_prefix = "AWS-${var.name}-LT-"
 
-  image_id      = var.ami_id
+  image_id      = var.ami
   instance_type = var.instance_type
 
   vpc_security_group_ids = [
@@ -12,13 +12,14 @@ resource "aws_launch_template" "TF-LT-Obligatorio" {
   user_data = base64encode(<<-EOF
 #!/bin/bash
 
-apt-get update -y
-apt-get install -y docker.io
+dnf update -y
+dnf install -y docker
 
 systemctl enable docker
 systemctl start docker
 
 docker run -d \
+--name nginx \
 -p 80:80 \
 nginx
 
