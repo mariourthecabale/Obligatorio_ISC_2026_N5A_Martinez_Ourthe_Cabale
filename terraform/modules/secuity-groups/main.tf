@@ -1,4 +1,4 @@
-##SG para ALB
+## Security Group para ALB
 resource "aws_security_group" "TF-SG-ALB" {
 
   name        = "AWS-${var.name}-SG-ALB"
@@ -17,7 +17,6 @@ resource "aws_security_group" "TF-SG-ALB" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  
   egress {
     description     = "HTTP hacia EC2"
     from_port       = var.app_port
@@ -31,7 +30,7 @@ resource "aws_security_group" "TF-SG-ALB" {
   }
 }
 
-##SG para EC2
+## Security Group para EC2
 resource "aws_security_group" "TF-SG-EC2" {
 
   name        = "AWS-${var.name}-SG-EC2"
@@ -67,7 +66,7 @@ resource "aws_security_group" "TF-SG-EC2" {
   }
 }
 
-##SG para RDS
+## Security Group para RDS
 resource "aws_security_group" "TF-SG-RDS" {
 
   name        = "AWS-${var.name}-SG-RDS"

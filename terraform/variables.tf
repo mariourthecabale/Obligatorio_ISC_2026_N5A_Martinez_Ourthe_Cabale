@@ -1,13 +1,16 @@
+## Variable para la región de AWS
 variable "aws_region" {
   type = string
   description = "Variable para la region"
 }
 
+## Variable para el CIDR block de la VPC
 variable "ami" {
   type = string
   description = "Variable para eleccion de la ami"
 }
 
+## Variables para el módulo de networking
 variable "vpc_cidr" {
   type = string
   description = "Variable para el CIDR block"
@@ -58,6 +61,7 @@ variable "name" {
   description = "Obligatorio"
 }
 
+## Variables para el módulo de security groups
 variable "app_port" {
   type    = number
   default = 80

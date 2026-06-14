@@ -1,3 +1,4 @@
+## Variables para los SG de ALB, EC2 y RDS
 variable "name" {
   type = string
 }
