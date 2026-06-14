@@ -30,3 +30,18 @@ module "networking" {
     var.private_subnet_DB_2
   ]
 }
+
+module "ec2_asg" {
+
+  source = "../../modules/ec2_asg"
+
+  name = var.name
+
+  ami_id = var.ami_id
+
+  private_subnet_ids = module.vpc.private_app_subnet_ids
+
+  ec2_security_group_id = module.security_groups.ec2_sg_id
+
+  target_group_arn = module.alb.target_group_arn
+}
