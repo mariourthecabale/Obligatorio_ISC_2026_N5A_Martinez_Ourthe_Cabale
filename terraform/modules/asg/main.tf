@@ -7,6 +7,10 @@ resource "aws_launch_template" "TF-LT-Obligatorio" {
   image_id      = var.ami
   instance_type = var.instance_type
 
+  iam_instance_profile {
+    name = "LabInstanceProfile"
+  }
+
   vpc_security_group_ids = [
     var.ec2_security_group_id
   ]

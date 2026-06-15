@@ -1,22 +1,70 @@
-## Main para crear la base de datos RDS utilizando el módulo database.
-module "database" {
-  source = "./modules/database"
+## RDS MySQL
 
-  name = "Obligatorio"
+resource "aws_db_instance" "rds" {
 
-  private_db_subnet_ids = module.networking.private_db_subnet_ids
-  rds_security_group_id = module.security_groups.rds_security_group_id
+  identifier = "db-${lower(var.name)}"
+ 
+  engine         = var.db_engine
 
-  db_name     = var.db_name
-  db_username = var.db_username
-  db_password = var.db_password
+  engine_version = var.db_engine_version
 
-  db_instance_class = "db.t3.micro"
-  allocated_storage = 20
+  instance_class = var.db_instance_class
+ 
+  allocated_storage     = var.allocated_storage
 
-  multi_az = false
+  max_allocated_storage = var.max_allocated_storage
 
-  backup_retention_period = 7
-  skip_final_snapshot     = false
-  deletion_protection     = false
+  storage_type          = var.storage_type
+
+  storage_encrypted     = true
+ 
+  db_name  = var.db_name
+
+  username = var.db_username
+
+  password = var.db_password
+ 
+  port = var.db_port
+ 
+  db_subnet_group_name   = aws_db_subnet_group.rds.name
+
+  vpc_security_group_ids = [var.rds_security_group_id]
+ 
+  publicly_accessible = false
+
+  multi_az            = var.multi_az
+ 
+  backup_retention_period = var.backup_retention_period
+
+  backup_window           = var.backup_window
+
+  maintenance_window      = var.maintenance_window
+ 
+  skip_final_snapshot       = var.skip_final_snapshot
+
+  final_snapshot_identifier = var.skip_final_snapshot ? null : "final-snapshot-${lower(var.name)}"
+ 
+  deletion_protection = var.deletion_protection
+ 
+  auto_minor_version_upgrade = true
+ 
+  tags = {
+
+    Name = "AWS-${var.name}-RDS"
+
+  }
+
+}
+ 
+
+resource "aws_db_subnet_group" "rds" {
+
+  name = "db-subnet-group-${lower(var.name)}"
+
+  subnet_ids = var.private_db_subnet_ids
+
+  tags = {
+    Name = "AWS-${var.name}-DBSubnetGroup"
+  }
+
 }
