@@ -5,7 +5,7 @@ provider "aws" {
 
 ### Módulo de Networking donde se crean VPC, Subnets, Internet Gateway, NAT Gateway y Route Tables contemplando alta disponibilidad con dos AZs
 module "networking" {
-  source = "git::https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-networking.git"
+  source = "git::ssh://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-networking.git"
   
   name     = "Obligatorio"
   vpc_cidr = var.vpc_cidr
@@ -29,7 +29,7 @@ module "networking" {
 
 ## Modulo donde se crean los SG para el ALB, EC2 y RDS
 module "security_groups" {
-  source = "git::https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-security-groups.git"
+  source = "git::ssh://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-security-groups.git"
   
   project_name   = var.project_name
   vpc_id = module.networking.vpc_id
@@ -39,7 +39,7 @@ module "security_groups" {
 
 ### Módulo de ALB donde se crea el Application Load Balancer, su Target Group y su Listener
 module "alb" {
-  source                = "git::https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-alb.git"
+  source                = "git::ssh://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-alb.git"
   
   name                  = "Obligatorio"
   vpc_id                = module.networking.vpc_id
@@ -50,7 +50,7 @@ module "alb" {
 ## Módulo de ASG donde se crea el Auto Scaling Group y su Launch Template, utilizando la AMI y el tipo de instancia definidos en las variables, además de asociar el ASG al Target Group del ALB y al SG de EC2
 module "ec2_asg" {
 
-  source = "git::https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-asg.git"
+  source = "git::ssh://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-asg.git"
 
   db_host = module.database.db_endpoint
   db_name     = var.db_name
@@ -65,7 +65,7 @@ module "ec2_asg" {
 
 
 module "database" {
-  source = "git::https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-database.git"
+  source = "git::ssh://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-database.git"
 
   name = "Obligatorio"
   private_db_subnet_ids = module.networking.private_db_subnet_ids
