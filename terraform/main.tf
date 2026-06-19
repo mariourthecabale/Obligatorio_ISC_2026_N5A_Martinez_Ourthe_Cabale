@@ -52,6 +52,10 @@ module "ec2_asg" {
 
   source = "git::https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-asg.git"
 
+  db_host = module.database.db_endpoint
+  db_name     = var.db_name
+  db_username = var.db_username
+  db_password = var.db_password
   name = var.project_name
   ami = var.ami
   private_subnet_ids = module.networking.private_app_subnet_ids
