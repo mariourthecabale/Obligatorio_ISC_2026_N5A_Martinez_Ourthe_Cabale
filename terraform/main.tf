@@ -70,7 +70,7 @@ module "ec2_asg" {
 
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-asg.git"
 
-  db_host = module.database.db_endpoint
+  db_host = module.database.db_address
   db_name     = var.db_name
   db_username = var.db_username
   db_password = var.db_password
