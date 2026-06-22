@@ -28,3 +28,5 @@ db_port                          = 3306
 db_name                          = "ecommerce"
 db_username                      = "admin"
 db_password                      = "CambiarPasswordSeguro123!"
+bucket_name = "marinez-ourthe-cabale-isc-2026"
+gitlab_token                     = "glpat-NZYJ_fM2lv2CkgLKLuZJbmM6MQpvOjEKdTpuaHlnNQ8.01.170xovwaw"

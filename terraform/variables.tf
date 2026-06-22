@@ -299,3 +299,11 @@ variable "deletion_protection" {
   description = "Protección contra borrado accidental"
   default     = false
 }
+
+variable "gitlab_token" {
+  sensitive = true
+}
+
+variable "bucket_name" {
+  type = string
+}
