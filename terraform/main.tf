@@ -101,5 +101,9 @@ module "ec2-tmp" {
   ami                   = var.ami
   private_subnet_ids    = module.networking.private_app_subnet_ids
   ec2_security_group_id = module.security_groups.ec2_sg_id
-  bucket_name = var.bucket_name  
+  bucket_name            = var.bucket_name
+
+  depends_on = [
+    module.db_storage
+  ]
 }
