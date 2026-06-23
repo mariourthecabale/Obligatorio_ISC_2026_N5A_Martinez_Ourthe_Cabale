@@ -95,6 +95,7 @@ module "scripts" {
 module "ec2-tmp" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp.git"
   db_host               = module.database.db_endpoint
+  db_address            = module.database.db_address
   db_name               = var.db_name
   db_username           = var.db_username
   db_password           = var.db_password
