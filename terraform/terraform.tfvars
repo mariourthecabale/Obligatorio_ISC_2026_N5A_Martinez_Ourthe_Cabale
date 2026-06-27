@@ -9,7 +9,7 @@ vpc_aws_az_2                     = "us-east-1b"
 public_subnet_2                  = "172.16.50.0/24"
 private_subnet_APP_2             = "172.16.10.0/24"
 private_subnet_DB_2              = "172.16.20.0/24"
-project_name                     = "AWS-Obligatorio-LT"
+project_name                     = "AWS-Obligatorio"
 health_check_enabled             = true
 alb_name                         = "alb-obligatorio"
 target_group_port                = 80
@@ -28,7 +28,7 @@ db_port                          = 3306
 db_name                          = "ecommerce"
 db_username                      = "admin"
 db_password                      = "CambiarPasswordSeguro123!"
-bucket_name = "martinez-ourthe-cabale-isc-2026"
+bucket_name = "obligatorio-martinez-ourthe-cabale-isc-2026"
 gitlab_token                     = "glpat-NZYJ_fM2lv2CkgLKLuZJbmM6MQpvOjEKdTpuaHlnNQ8.01.170xovwaw"
 notificacion_email               = [
     "matiasmartinezmon@gmail.com",
