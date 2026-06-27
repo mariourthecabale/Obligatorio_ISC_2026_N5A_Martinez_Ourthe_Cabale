@@ -251,7 +251,7 @@ variable "db_name" {
   description = "Nombre de la base de datos inicial"
   default     = "ecommerce"
 }
- 
+
 variable "db_username" {
   type        = string
   description = "Usuario administrador de la base"
@@ -306,4 +306,34 @@ variable "gitlab_token" {
 
 variable "bucket_name" {
   type = string
+}
+
+variable "app_ready_check_scheme" {
+  type        = string
+  default     = "http"
+  description = "Protocolo para comprobar la aplicación"
+}
+
+variable "app_ready_check_path" {
+  type        = string
+  default     = "/"
+  description = "Ruta HTTP que se usa para verificar si la app ya está lista"
+}
+
+variable "app_ready_check_attempts" {
+  type        = number
+  default     = 60
+  description = "Número máximo de intentos para comprobar la aplicación"
+}
+
+variable "app_ready_check_sleep_seconds" {
+  type        = number
+  default     = 10
+  description = "Segundos entre cada intento de comprobación"
+}
+
+variable "app_ready_check_curl_timeout" {
+  type        = number
+  default     = 10
+  description = "Timeout en segundos para cada petición curl"
 }

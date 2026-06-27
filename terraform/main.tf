@@ -82,6 +82,32 @@ module "ec2_asg" {
   gitlab_token          = var.gitlab_token
 }
 
+locals {
+  app_ready_url = "${var.app_ready_check_scheme}://${module.alb.alb_dns_name}${var.app_ready_check_path}"
+}
+
+resource "null_resource" "Esperando_por_APP" {
+  depends_on = [
+    module.alb,
+    module.ec2_asg,
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      for i in $(seq 1 ${var.app_ready_check_attempts}); do
+        if curl --max-time ${var.app_ready_check_curl_timeout} -fsS "${local.app_ready_url}" >/dev/null 2>&1; then
+          echo "App disponible en ${local.app_ready_url}"
+          exit 0
+        fi
+        echo "Esperando por la aplicación... intento $i/${var.app_ready_check_attempts}"
+        sleep ${var.app_ready_check_sleep_seconds}
+      done
+      echo "ERROR: APP todavia no esta disponible" >&2
+      exit 1
+    EOT
+  }
+}
+
 ##Modulo para creacion de S3
 module "db_storage" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/storage-backup"
@@ -96,12 +122,13 @@ module "ec2-tmp" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp.git"
   db_host               = module.database.db_address
   db_name               = var.db_name
+  db_port               = var.db_port
   db_username           = var.db_username
   db_password           = var.db_password
   ami                   = var.ami
   private_subnet_ids    = module.networking.private_app_subnet_ids
   ec2_security_group_id = module.security_groups.ec2_sg_id
-  bucket_name            = var.bucket_name
+  bucket_name           = var.bucket_name
 
   depends_on = [
     module.db_storage
