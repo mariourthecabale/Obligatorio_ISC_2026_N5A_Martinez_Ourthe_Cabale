@@ -161,6 +161,7 @@ variable "app_port" {
   }
 }
 
+## Variable para el puerto de la base de datos
 variable "db_port" {
   description = "Puerto para el tráfico de la base de datos"
   type    = number
@@ -208,106 +209,122 @@ variable "alb_ingress_protocol" {
   }
 }
 
-## Variables para el módulo de base de datos RDS.
-
+## Variables para el motor de base de datos.
 variable "db_engine" {
   type        = string
   description = "Motor de base de datos"
   default     = "mysql"
 }
- 
+
+## Variable para la versión del motor de base de datos. 
 variable "db_engine_version" {
   type        = string
   description = "Versión del motor MySQL"
   default     = "8.0"
 }
- 
+
+## Variable para el tipo de instancia de la base de datos. 
 variable "db_instance_class" {
   type        = string
   description = "Tipo de instancia RDS"
   default     = "db.t3.micro"
 }
- 
+
+## Variable para el almacenamiento inicial de la base de datos. 
 variable "allocated_storage" {
   type        = number
   description = "Storage inicial en GB"
   default     = 20
 }
- 
+
+## Variable para el almacenamiento máximo de la base de datos. 
 variable "max_allocated_storage" {
   type        = number
   description = "Storage máximo para autoscaling en GB"
   default     = 100
 }
- 
+
+## Variable para el tipo de almacenamiento de la base de datos. 
 variable "storage_type" {
   type        = string
   description = "Tipo de storage"
   default     = "gp3"
 }
- 
+
+### Variable para el nombre de la base de datos inicial 
 variable "db_name" {
   type        = string
   description = "Nombre de la base de datos inicial"
   default     = "ecommerce"
 }
 
+## Variable para el nombre de usuario administrador de la base de datos.
 variable "db_username" {
   type        = string
   description = "Usuario administrador de la base"
   sensitive   = true
 }
- 
+
+## Variable para la contraseña del usuario administrador de la base de datos. 
 variable "db_password" {
   type        = string
   description = "Contraseña del usuario administrador"
   sensitive   = true
 }
- 
+
+### Variable para habilitar o deshabilitar RDS Multi-AZ 
 variable "multi_az" {
   type        = bool
   description = "Habilita RDS Multi-AZ"
-  default     = false
+  default     = false ## Nota: este valor se puede cambiar a true si se desea alta disponibilidad, pero esto incrementará el costo.
 }
- 
+
+## Variable para definir número de días de retención de backups automáticos. 
 variable "backup_retention_period" {
   type        = number
   description = "Días de retención de backups automáticos"
   default     = 7
 }
- 
+
+## Variable para definir ventana horaria para backups automáticos. 
 variable "backup_window" {
   type        = string
   description = "Ventana horaria para backups automáticos"
   default     = "03:00-04:00"
 }
- 
+
+## Variable para definir ventana horaria para mantenimiento de RDS. 
 variable "maintenance_window" {
   type        = string
   description = "Ventana de mantenimiento"
   default     = "sun:04:00-sun:05:00"
 }
- 
+
+## Variable para definir si se omite el snapshot final al destruir la DB. 
 variable "skip_final_snapshot" {
   type        = bool
   description = "Define si se omite el snapshot final al destruir la DB"
   default     = false
 }
- 
+
+## Variable para definir si se habilita la protección contra borrado accidental de la DB. 
 variable "deletion_protection" {
   type        = bool
   description = "Protección contra borrado accidental"
   default     = false
 }
 
+## Variable para el token de acceso a GitLab.
 variable "gitlab_token" {
   sensitive = true
 }
 
+## Variable para el nombre del bucket de S3 donde se almacenarán los backups de la base de datos.
 variable "bucket_name" {
   type = string
 }
 
+## Variable para comprobar la disponibilidad de la aplicación mediante curl, con reintentos y tiempo de espera configurables
 variable "app_ready_check_scheme" {
   type        = string
   default     = "http"
@@ -336,4 +353,11 @@ variable "app_ready_check_curl_timeout" {
   type        = number
   default     = 10
   description = "Timeout en segundos para cada petición curl"
+}
+
+## Variable para el correo electrónico donde se recibirán alertas de CloudWatch.
+variable "notificacion_email" {
+  description = "Email para recibir alertas de CloudWatch."
+  type        = string
+  default     = ""
 }

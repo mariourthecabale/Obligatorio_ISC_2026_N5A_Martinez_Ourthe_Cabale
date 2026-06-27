@@ -30,3 +30,6 @@ db_username                      = "admin"
 db_password                      = "CambiarPasswordSeguro123!"
 bucket_name = "martinez-ourthe-cabale-isc-2026"
 gitlab_token                     = "glpat-NZYJ_fM2lv2CkgLKLuZJbmM6MQpvOjEKdTpuaHlnNQ8.01.170xovwaw"
+notificacion_email               = [
+    "matiasmartinezmon@gmail.com",
+    "mourthecabalediaz@gmail.com"]

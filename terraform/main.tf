@@ -3,7 +3,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-### Módulo de Networking donde se crean VPC, Subnets, Internet Gateway, NAT Gateway y Route Tables contemplando alta disponibilidad con dos AZs
+## Módulo de Networking donde se crean VPC, Subnets, Internet Gateway, NAT Gateway y Route Tables contemplando alta disponibilidad con dos AZs
 module "networking" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-networking.git"
 
@@ -37,7 +37,7 @@ module "security_groups" {
   db_port      = var.db_port
 }
 
-### Módulo de ALB donde se crea el Application Load Balancer, su Target Group y su Listener
+## Módulo de ALB donde se crea el Application Load Balancer, su Target Group y su Listener
 module "alb" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-alb.git"
 
@@ -47,7 +47,7 @@ module "alb" {
   alb_security_group_id = module.security_groups.alb_sg_id
 }
 
-
+## Módulo de RDS donde se crea la base de datos en RDS, utilizando los SG y Subnets creados en los módulos anteriores
 module "database" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-database.git"
 
@@ -82,16 +82,19 @@ module "ec2_asg" {
   gitlab_token          = var.gitlab_token
 }
 
+## Variable local para construir la URL de verificación de disponibilidad de la aplicación
 locals {
   app_ready_url = "${var.app_ready_check_scheme}://${module.alb.alb_dns_name}${var.app_ready_check_path}"
 }
 
+## Recurso para esperar a que la aplicación esté lista
 resource "null_resource" "Esperando_por_APP" {
   depends_on = [
     module.alb,
     module.ec2_asg,
   ]
 
+  ## Provisión local para ejecutar un script que verifica la disponibilidad de la aplicación mediante curl, con reintentos y tiempo de espera configurables
   provisioner "local-exec" {
     command = <<-EOT
       for i in $(seq 1 ${var.app_ready_check_attempts}); do
@@ -108,16 +111,18 @@ resource "null_resource" "Esperando_por_APP" {
   }
 }
 
-##Modulo para creacion de S3
+## Modulo para creacion de S3
 module "db_storage" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/storage-backup"
   bucket_name = var.bucket_name
 }
 
+## Módulo para ejecutar scripts de inicialización de la base de datos y la aplicación
 module "scripts" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/scripts.git"
 }
 
+## Módulo para crear una instancia EC2 temporal para ejecutar scripts de inicialización de la base de datos y la aplicación, utilizando los SG y Subnets creados en los módulos anteriores
 module "ec2-tmp" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp.git"
   db_host               = module.database.db_address
@@ -133,4 +138,20 @@ module "ec2-tmp" {
   depends_on = [
     module.db_storage
   ]
+}
+
+## Módulo para crear recursos de monitoreo y alertas, utilizando los SG y Subnets creados en los módulos anteriores, además de asociar el ALB, ASG y RDS a las métricas de CloudWatch y configurar notificaciones por correo electrónico
+module "monitoring" {
+  source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-monitoring.git"
+  project_name      = var.project_name
+  vpc_id            = module.networking.vpc_id
+  public_subnet_ids = module.networking.public_subnet_ids
+
+  alb_arn          = module.alb.alb_arn
+  target_group_arn = module.alb.target_group_arn
+
+  asg_name        = module.ec2_asg.asg_name
+  db_instance_id  = module.database.db_instance_id
+
+  notification_email = var.notification_email
 }
