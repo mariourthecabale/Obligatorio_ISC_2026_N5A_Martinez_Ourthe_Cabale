@@ -159,18 +159,15 @@ module "db_backup" {
   ]
 }
 
-## Módulo para crear recursos de monitoreo y alertas, utilizando los SG y Subnets creados en los módulos anteriores, además de asociar el ALB, ASG y RDS a las métricas de CloudWatch y configurar notificaciones por correo electrónico
+## Módulo para crear recursos de monitoreo y alertas, asociar el ALB, ASG y RDS a las métricas de CloudWatch y configurar notificaciones por correo electrónico
 module "monitoring" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-monitoring.git"
-  project_name      = var.project_name
-  vpc_id            = module.networking.vpc_id
-  public_subnet_ids = module.networking.public_subnet_ids
-
-  alb_arn          = module.alb.alb_arn
-  target_group_arn = module.alb.target_group_arn
-
+  project_name = var.project_name
+  alb_arn_suffix          = module.alb.alb_arn_suffix
+  target_group_arn_suffix = module.alb.target_group_arn_suffix
+  
   asg_name        = module.ec2_asg.asg_name
   db_instance_id  = module.database.db_instance_id
-
+  
   notificacion_email = var.notificacion_email
 }
