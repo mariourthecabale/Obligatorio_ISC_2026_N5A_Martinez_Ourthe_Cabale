@@ -62,7 +62,11 @@ La aplicación corre en contenedores Docker sobre instancias EC2, la imagen se o
 |**EC2**|Instancias que ejecutan la aplicación en contenedores Docker|
 |**RDS (MySQL 8.0)**|Base de datos relacional administrada|
 |**DB Subnet Group**|Grupo de subnets privadas para RDS|
-|**S3**|Almacenamiento de backups y archivos|
+|**S3**|Bucket privado de backups + `db-settings.sql`, y bucket público de solo lectura para imágenes de productos|
+|**Lambda**|Backup automático de RDS (lanza/apaga la instancia de backup) — ver módulo `db_backup`|
+|**EventBridge (CloudWatch Events)**|Programa el horario diario de las Lambdas de backup (2am / 5am hora Uruguay)|
+|**CloudWatch (Alarmas + Dashboard)**|Monitoreo de CPU/EC2, hosts no saludables y 5xx del ALB, CPU/almacenamiento de RDS|
+|**SNS**|Notificaciones por email de las alarmas de CloudWatch|
 |**Security Groups**|Firewall a nivel de instancia para ALB, EC2 y RDS|
 |**IAM Instance Profile**|Perfil `LabInstanceProfile` para permisos de las instancias|
 
@@ -143,8 +147,10 @@ La aplicación corre en contenedores Docker sobre instancias EC2, la imagen se o
 
 |Parámetro|Valor|
 |-|-|
-|Nombre del bucket|`bucket\\\_name` (variable requerida)|
-|Propósito|Backup y almacenamiento de archivos|
+|Bucket de backups|`bucket\\\_name` (variable requerida) — privado, cifrado, versionado|
+|Bucket de imágenes|`"${bucket_name}-images"` — público de solo lectura, fotos de productos|
+|Propósito backups|Backups de RDS (prefijo `bkp-rds/`) y `db-settings.sql`|
+|Propósito imágenes|Servir las fotos de `products.images` directamente vía URL HTTPS|
 
 \---
 
@@ -196,10 +202,11 @@ Este repositorio actúa como **orquestador** que consume módulos alojados en la
 |`alb`|`ISC-2026-Martinez-Ourthe-Cabale/module-alb`|ALB, Target Group, Listener|
 |`ec2\\\_asg`|`ISC-2026-Martinez-Ourthe-Cabale/module-asg`|Launch Template + Auto Scaling Group|
 |`database`|`ISC-2026-Martinez-Ourthe-Cabale/module-database`|RDS MySQL + DB Subnet Group|
-|`db\\\_storage`|`ISC-2026-Martinez-Ourthe-Cabale/storage-backup`|S3 bucket para backups|
-|`ec2-tmp`|`ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp`|EC2 temporales (uso durante desarrollo)|
+|`db\\\_storage`|`ISC-2026-Martinez-Ourthe-Cabale/storage-backup`|Bucket S3 de backups (privado) + bucket S3 de imágenes de productos (público)|
+|`ec2-tmp`|`ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp`|EC2 que puebla la base de datos de forma idempotente y completa las URLs de imágenes de productos|
 |`db\\\_backup`|`ISC-2026-Martinez-Ourthe-Cabale/module-db-backup`|Lambdas de backup automático de RDS (2am levanta EC2 y respalda, 5am apaga)|
-|`scripts`|`ISC-2026-Martinez-Ourthe-Cabale/scripts`|Scripts de ejecución manual|
+|`monitoring`|`ISC-2026-Martinez-Ourthe-Cabale/module-monitoring`|Alarmas y dashboard de CloudWatch, notificaciones por SNS|
+|`scripts`|`ISC-2026-Martinez-Ourthe-Cabale/scripts`|⚠️ Sin recursos Terraform — versión anterior de la lógica de `ec2-tmp`, no usada|
 
 > Los módulos se referencian vía SSH (`git::ssh://git@github.com/...`). Requieren acceso SSH configurado con permisos a la organización.
 
@@ -237,11 +244,10 @@ El usuario o rol que ejecute Terraform debe tener permisos para gestionar: `ec2:
 ```
 Obligatorio\\\_ISC\\\_2026\\\_N5A\\\_Martinez\\\_Ourthe\\\_Cabale/
 ├── terraform/
-│   ├── main.tf           # Orquestación de todos los módulos
+│   ├── main.tf           # Orquestación de todos los módulos (incluye el provider "aws")
 │   ├── variables.tf      # Declaración de variables de entrada
-│   ├── outputs.tf        # Outputs (ALB DNS)
-│   ├── terraform.tfvars  # Valores concretos (NO commitear si tiene secretos)
-│   └── providers.tf      # Configuración del provider AWS (si existe)
+│   ├── output.tf         # Outputs (ALB DNS)
+│   └── terraform.tfvars  # Valores concretos (NO commitear si tiene secretos)
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -327,6 +333,9 @@ bucket\\\_name = "obligatorio-backup-XXXX"   # debe ser globalmente único
 
 # GitLab
 gitlab\\\_token = "gldt-XXXXXXXXXXXX"         # Deploy token de GitLab
+
+# Monitoreo (opcional)
+notificacion\\\_email = ["alguien@example.com"]   # vacío ([]) si no querés notificaciones por email
 ```
 
 > ⚠️ \\\*\\\*No commitear `terraform.tfvars` si contiene contraseñas o tokens.\\\*\\\* Agregar al `.gitignore`.
@@ -431,8 +440,9 @@ A continuación el detalle completo de todas las variables del módulo raíz:
 |`multi\\\_az`|`bool`|❌|`false`|Habilitar RDS Multi-AZ|
 |`skip\\\_final\\\_snapshot`|`bool`|❌|`false`|Omitir snapshot al destruir|
 |`deletion\\\_protection`|`bool`|❌|`false`|Proteger DB contra borrado|
-|`bucket\\\_name`|`string`|✅|—|Nombre del bucket S3|
+|`bucket\\\_name`|`string`|✅|—|Nombre del bucket S3 de backups (el bucket público de imágenes se deriva como `"${bucket_name}-images"`)|
 |`gitlab\\\_token`|`any`|✅|—|Token de despliegue de GitLab|
+|`notificacion\\\_email`|`list(string)`|❌|`[]`|Lista de emails que reciben las alertas de CloudWatch (vía SNS)|
 
 \---
 
