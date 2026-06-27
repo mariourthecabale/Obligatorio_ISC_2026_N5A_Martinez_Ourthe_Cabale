@@ -34,7 +34,7 @@ La aplicación corre en contenedores Docker sobre instancias EC2, la imagen se o
 
 ## Diagrama de arquitectura
 
-!\[Diagrama de arquitectura](./imagenes-doc/diagrama.png)
+![Diagrama de arquitectura](./imagenes-doc/diagrama.png)
 
 **Flujo de tráfico:**
 
