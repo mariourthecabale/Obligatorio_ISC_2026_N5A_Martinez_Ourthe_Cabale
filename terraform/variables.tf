@@ -357,7 +357,7 @@ variable "app_ready_check_curl_timeout" {
 
 ## Variable para el correo electrónico donde se recibirán alertas de CloudWatch.
 variable "notificacion_email" {
-  description = "Email para recibir alertas de CloudWatch."
-  type        = string
-  default     = ""
+  description = "Lista de emails para recibir alertas de CloudWatch."
+  type        = list(string)
+  default     = []
 }

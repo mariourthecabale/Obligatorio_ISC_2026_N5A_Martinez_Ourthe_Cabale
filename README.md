@@ -198,6 +198,7 @@ Este repositorio actúa como **orquestador** que consume módulos alojados en la
 |`database`|`ISC-2026-Martinez-Ourthe-Cabale/module-database`|RDS MySQL + DB Subnet Group|
 |`db\\\_storage`|`ISC-2026-Martinez-Ourthe-Cabale/storage-backup`|S3 bucket para backups|
 |`ec2-tmp`|`ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp`|EC2 temporales (uso durante desarrollo)|
+|`db\\\_backup`|`ISC-2026-Martinez-Ourthe-Cabale/module-db-backup`|Lambdas de backup automático de RDS (2am levanta EC2 y respalda, 5am apaga)|
 |`scripts`|`ISC-2026-Martinez-Ourthe-Cabale/scripts`|Scripts de ejecución manual|
 
 > Los módulos se referencian vía SSH (`git::ssh://git@github.com/...`). Requieren acceso SSH configurado con permisos a la organización.

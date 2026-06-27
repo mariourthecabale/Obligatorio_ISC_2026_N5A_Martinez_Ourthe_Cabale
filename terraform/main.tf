@@ -140,6 +140,25 @@ module "ec2-tmp" {
   ]
 }
 
+## Módulo para crear las Lambdas de backup automático de la base de datos: a las 2am (hora Uruguay) levanta una instancia EC2 temporal que vuelca la DB a S3, y a las 5am una segunda Lambda termina la instancia como red de seguridad
+module "db_backup" {
+  source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-db-backup.git"
+
+  ami                    = var.ami
+  private_subnet_ids     = module.networking.private_app_subnet_ids
+  ec2_security_group_id  = module.security_groups.ec2_sg_id
+  bucket_name            = var.bucket_name
+  db_host                = module.database.db_address
+  db_name                = var.db_name
+  db_username            = var.db_username
+  db_password            = var.db_password
+  db_port                = var.db_port
+
+  depends_on = [
+    module.db_storage
+  ]
+}
+
 ## Módulo para crear recursos de monitoreo y alertas, utilizando los SG y Subnets creados en los módulos anteriores, además de asociar el ALB, ASG y RDS a las métricas de CloudWatch y configurar notificaciones por correo electrónico
 module "monitoring" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-monitoring.git"
@@ -153,5 +172,5 @@ module "monitoring" {
   asg_name        = module.ec2_asg.asg_name
   db_instance_id  = module.database.db_instance_id
 
-  notification_email = var.notification_email
+  notificacion_email = var.notificacion_email
 }
