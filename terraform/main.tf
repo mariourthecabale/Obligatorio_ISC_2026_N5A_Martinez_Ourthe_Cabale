@@ -1,3 +1,15 @@
+##
+terraform {
+  backend "s3" {
+    bucket         = "tfstate-martinez-ourthecabale"
+    key            = "obligatorio/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-state-lock"
+    encrypt        = true
+  }
+}
+
+
 ## Módulo de Networking donde se crean VPC, Subnets, Internet Gateway, NAT Gateway y Route Tables contemplando alta disponibilidad con dos AZs
 module "networking" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-networking.git"
