@@ -204,10 +204,10 @@ Este repositorio actúa como **orquestador** que consume módulos alojados en la
 |`ec2_asg`|`ISC-2026-Martinez-Ourthe-Cabale/module-asg`|Launch Template + Auto Scaling Group|
 |`database`|`ISC-2026-Martinez-Ourthe-Cabale/module-database`|RDS MySQL + DB Subnet Group|
 |`db_storage`|`ISC-2026-Martinez-Ourthe-Cabale/storage-backup`|Bucket S3 de backups (privado) + bucket S3 de imágenes de productos (público)|
-|`ec2-tmp`|`ISC-2026-Martinez-Ourthe-Cabale/modules-ec2-tmp`|EC2 que puebla la base de datos de forma idempotente y completa las URLs de imágenes de productos|
 |`db_backup`|`ISC-2026-Martinez-Ourthe-Cabale/module-db-backup`|Lambdas de backup automático de RDS (2am levanta EC2 y respalda, 5am apaga)|
 |`monitoring`|`ISC-2026-Martinez-Ourthe-Cabale/module-monitoring`|Alarmas y dashboard de CloudWatch, notificaciones por SNS|
-|`scripts`|`ISC-2026-Martinez-Ourthe-Cabale/scripts`|⚠️ Sin recursos Terraform — versión anterior de la lógica de `ec2-tmp`, no usada|
+|`storage-backup`|`ISC-2026-Martinez-Ourthe-Cabale/storage-backup`|Buckets de S3 para scripts de sql, backups de RDS e imagenes de la ecommerce|
+
 
 > Los módulos se referencian vía SSH (`git::ssh://git@github.com/...`). Requieren acceso SSH configurado con permisos a la organización.
 
@@ -271,26 +271,8 @@ git clone git@github.com:mariourthecabale/Obligatorio_ISC_2026_N5A_Martinez_Ourt
 cd Obligatorio_ISC_2026_N5A_Martinez_Ourthe_Cabale/terraform
 ```
 
-### 2. Configurar credenciales AWS
 
-```bash
-aws configure
-# Ingresar: AWS Access Key ID, Secret Access Key, región (ej: us-east-1) y formato (json)
-```
-
-O bien, si se trabaja en un entorno con roles de instancia/Lab, las credenciales ya están disponibles.
-
-### 3. Configurar la clave SSH para GitHub
-
-Asegurarse de que la clave SSH esté registrada en GitHub y agregada al agente SSH:
-
-```bash
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa   # o la clave correspondiente
-ssh -T git@github.com   # verificar acceso
-```
-
-### 4. Crear el archivo de variables
+### 2. Crear el archivo de variables
 
 Crear un archivo `terraform.tfvars` en el directorio `terraform/` con todos los valores requeridos:
 
@@ -345,7 +327,7 @@ notificacion_email = ["alguien@example.com"]   # vacío ([]) si no querés notif
 
 > ⚠️ **No commitear `terraform.tfvars` si contiene contraseñas o tokens.** Agregar al `.gitignore`.
 
-### 5. Bootstrap del backend remoto (una sola vez por equipo)
+### 3. Bootstrap del backend remoto (una sola vez por equipo)
 
 El state de Terraform se guarda en S3 con lock por DynamoDB, no en un archivo local — así todo el equipo comparte el mismo state y no se pisan entre sí. Esto requiere un bootstrap separado, **una sola vez**, hecho por una sola persona:
 
@@ -360,7 +342,7 @@ Esto crea el bucket `tfstate-martinez-ourthecabale` y la tabla DynamoDB `terrafo
 
 Si el bootstrap ya lo hizo otra persona del equipo, salteá este paso.
 
-### 6. Conectar el orquestador al backend remoto
+### 4. Conectar el orquestador al backend remoto
 
 En `terraform/main.tf` ya está declarado (valores literales, un bloque `backend` no acepta variables):
 
@@ -386,7 +368,7 @@ Responder `yes` cuando pregunte si copiar el state existente al backend nuevo. *
 
 Si es la primera vez que se despliega este proyecto (no hay state previo), alcanza con el `terraform init` del paso siguiente.
 
-### 7. Inicializar Terraform
+### 5. Inicializar Terraform
 
 Este paso descarga los módulos desde GitHub vía SSH:
 
@@ -396,23 +378,23 @@ terraform init
 
 Si hay errores de clonación de módulos, verificar que la clave SSH tenga acceso a la organización `ISC-2026-Martinez-Ourthe-Cabale`. Si ya habías corrido `init` antes y los módulos cambiaron, usar `terraform init -upgrade` para forzar a traer las versiones más nuevas.
 
-### 8. Revisar el plan de ejecución
+### 6. Revisar el plan de ejecución
 
 ```bash
-terraform plan
+terraform plan --var-file="terraform.tfvars"
 ```
 
 Revisar la salida para confirmar los recursos que se crearán antes de aplicar.
 
-### 9. Aplicar la infraestructura
+### 7. Aplicar la infraestructura
 
 ```bash
-terraform apply
+terraform apply --var-file="terraform.tfvars"
 ```
 
 Escribir `yes` cuando se solicite confirmación. El proceso tarda aproximadamente **10–15 minutos** (la creación de RDS y el NAT Gateway son los recursos más lentos).
 
-### 10. Obtener el DNS del ALB
+### 8. Obtener el DNS del ALB
 
 Al finalizar, Terraform mostrará el DNS público del ALB:
 
@@ -423,7 +405,7 @@ alb_dns_name = "obligatorio-alb-XXXXXXXXXX.us-east-1.elb.amazonaws.com"
 
 Acceder a esa URL desde el navegador para verificar que la aplicación responde.
 
-### 11. Destruir la infraestructura
+### 9. Destruir la infraestructura
 
 Cuando ya no se necesite el entorno:
 
