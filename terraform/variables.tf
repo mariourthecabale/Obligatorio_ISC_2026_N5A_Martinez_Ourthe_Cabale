@@ -331,24 +331,28 @@ variable "app_ready_check_scheme" {
   description = "Protocolo para comprobar la aplicación"
 }
 
+## Variable para el path de verificación de disponibilidad de la aplicación
 variable "app_ready_check_path" {
   type        = string
   default     = "/"
   description = "Ruta HTTP que se usa para verificar si la app ya está lista"
 }
 
+## Variable para el número máximo de intentos de verificación de disponibilidad de la aplicación
 variable "app_ready_check_attempts" {
   type        = number
   default     = 60
   description = "Número máximo de intentos para comprobar la aplicación"
 }
 
+## Variable para el tiempo de espera entre cada intento de verificación de disponibilidad de la aplicación
 variable "app_ready_check_sleep_seconds" {
   type        = number
   default     = 10
   description = "Segundos entre cada intento de comprobación"
 }
 
+## Variable para el timeout de cada petición curl al verificar la disponibilidad de la aplicación
 variable "app_ready_check_curl_timeout" {
   type        = number
   default     = 10
@@ -360,4 +364,44 @@ variable "notificacion_email" {
   description = "Lista de emails para recibir alertas de CloudWatch."
   type        = list(string)
   default     = []
+}
+
+## Variable para el tamaño mínimo del Auto Scaling Group
+variable "min_size" {
+  description = "Cantidad mínima de instancias"
+  type        = number
+  default     = 2
+}
+
+## Variable para el tamaño máximo del Auto Scaling Group
+variable "max_size" {
+  description = "Cantidad máxima de instancias"
+  type        = number
+  default     = 4
+}
+
+## Variable para la capacidad deseada del Auto Scaling Group
+variable "desired_capacity" {
+  description = "Cantidad inicial de instancias"
+  type        = number
+  default     = 2
+}
+
+## Variable para la cantidad de solicitudes por minuto objetivo por instancia
+variable "requests_per_target" {
+  description = "Solicitudes por minuto objetivo por instancia"
+  type        = number
+  default     = 1000
+}
+
+## Variable para el tiempo de inicialización de una instancia
+variable "instance_warmup" {
+  description = "Tiempo de inicialización de una instancia"
+  type        = number
+  default     = 180
+}
+
+variable "cpu_target_value" {
+  type    = number
+  default = 70
 }

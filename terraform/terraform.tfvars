@@ -33,3 +33,9 @@ gitlab_token                     = "glpat-NZYJ_fM2lv2CkgLKLuZJbmM6MQpvOjEKdTpuaH
 notificacion_email               = [
     "matiasmartinezmon@gmail.com",
     "mourthecabalediaz@gmail.com"]
+min_size           = 2
+max_size           = 4
+desired_capacity   = 2
+requests_per_target = 1000
+instance_warmup     = 180
+cpu_target_value    = 70

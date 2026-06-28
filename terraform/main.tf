@@ -80,6 +80,24 @@ module "ec2_asg" {
   ec2_security_group_id = module.security_groups.ec2_sg_id
   target_group_arn      = module.alb.target_group_arn
   gitlab_token          = var.gitlab_token
+
+  module "ec2_asg" {
+  
+  ## Configuración de escalado automático
+  min_size         = var.min_size
+  max_size         = var.max_size
+  desired_capacity = var.desired_capacity
+  cpu_target_value = var.cpu_target_value
+
+  ## Configuración de verificación de estado y tiempo de espera
+  alb_resource_label = join("/", [
+    module.alb.alb_arn_suffix,
+    module.alb.target_group_arn_suffix
+  ])
+
+  requests_per_target = var.requests_per_target
+  instance_warmup     = var.instance_warmup
+}
 }
 
 ## Variable local para construir la URL de verificación de disponibilidad de la aplicación
