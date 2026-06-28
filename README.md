@@ -425,7 +425,7 @@ terraform destroy
 ---
 ## Demostración del despliegue
 
-![Deploy Terraform](./imagenes/deploy-tf.gif)
+![Deploy Terraform](./imagenes-doc/deploy-tf.gif)
 ---
 ## Variables de entrada
 
