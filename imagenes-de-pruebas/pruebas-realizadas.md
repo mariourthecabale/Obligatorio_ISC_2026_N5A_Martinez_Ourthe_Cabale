@@ -66,4 +66,4 @@ Consecuencia directa del pico anterior: el Auto Scaling Group pasa de 2 a 3 inst
 
 ---
 
-*Capturas correspondientes a las pruebas de monitoreo y autoescalado del proyecto Obligatorio ISC 2026 — N5A | Martínez, Ourthe, Cabalé.*
+*Capturas correspondientes a las pruebas de monitoreo y autoescalado del proyecto Obligatorio ISC 2026 — N5A | Martínez, Ourthe-Cabalé.*

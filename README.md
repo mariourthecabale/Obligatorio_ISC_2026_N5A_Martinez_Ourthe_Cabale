@@ -332,10 +332,12 @@ notificacion_email = ["alguien@example.com"]   # vacío ([]) si no querés notif
 El state de Terraform se guarda en S3 con lock por DynamoDB, no en un archivo local — así todo el equipo comparte el mismo state y no se pisan entre sí. Esto requiere un bootstrap separado, **una sola vez**, hecho por una sola persona:
 
 ```bash
+cd ../../
 git clone git@github.com:ISC-2026-Martinez-Ourthe-Cabale/module-tfstate-backend.git
 cd module-tfstate-backend
 terraform init
-terraform apply
+terraform plan --var-file="terraform.tfvars"
+terraform apply --var-file="terraform.tfvars"
 ```
 
 Esto crea el bucket `tfstate-martinez-ourthecabale` y la tabla DynamoDB `terraform-state-lock`. Son recursos que quedan **fuera** del ciclo de vida del resto de la infraestructura (no se gestionan desde `terraform/main.tf`). Más detalle en el README de [`module-tfstate-backend`](https://github.com/ISC-2026-Martinez-Ourthe-Cabale/module-tfstate-backend).
@@ -378,7 +380,11 @@ terraform init
 
 Si hay errores de clonación de módulos, verificar que la clave SSH tenga acceso a la organización `ISC-2026-Martinez-Ourthe-Cabale`. Si ya habías corrido `init` antes y los módulos cambiaron, usar `terraform init -upgrade` para forzar a traer las versiones más nuevas.
 
-### 6. Revisar el plan de ejecución
+### 6. Validar terraform
+```bash
+terraform validate
+```
+### 7. Revisar el plan de ejecución
 
 ```bash
 terraform plan --var-file="terraform.tfvars"
@@ -386,7 +392,7 @@ terraform plan --var-file="terraform.tfvars"
 
 Revisar la salida para confirmar los recursos que se crearán antes de aplicar.
 
-### 7. Aplicar la infraestructura
+### 8. Aplicar la infraestructura
 
 ```bash
 terraform apply --var-file="terraform.tfvars"
@@ -394,7 +400,7 @@ terraform apply --var-file="terraform.tfvars"
 
 Escribir `yes` cuando se solicite confirmación. El proceso tarda aproximadamente **10–15 minutos** (la creación de RDS y el NAT Gateway son los recursos más lentos).
 
-### 8. Obtener el DNS del ALB
+### 9. Obtener el DNS del ALB
 
 Al finalizar, Terraform mostrará el DNS público del ALB:
 
@@ -405,7 +411,7 @@ alb_dns_name = "obligatorio-alb-XXXXXXXXXX.us-east-1.elb.amazonaws.com"
 
 Acceder a esa URL desde el navegador para verificar que la aplicación responde.
 
-### 9. Destruir la infraestructura
+### 10. Destruir la infraestructura
 
 Cuando ya no se necesite el entorno:
 
@@ -416,7 +422,11 @@ terraform destroy
 > ⚠️ Esto eliminará **todos** los recursos creados, incluyendo la base de datos. Si `skip_final_snapshot = false`, se creará un snapshot de RDS antes de borrar.
 
 ---
+---
+## Demostración del despliegue
 
+![Deploy Terraform](./imagenes/deploy.gif)
+---
 ## Variables de entrada
 
 A continuación el detalle completo de todas las variables del módulo raíz:
@@ -492,7 +502,7 @@ A continuación el detalle completo de todas las variables del módulo raíz:
 
 ---
 
-*Proyecto académico — ISC 2026 — N5A | Martínez, Ourthe, Cabalé*
+*Proyecto académico — ISC 2026 — N5A | Martínez, Ourthe-Cabalé*
 
 
 

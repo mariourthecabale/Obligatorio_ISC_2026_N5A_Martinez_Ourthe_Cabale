@@ -30,10 +30,8 @@ Todo el código de estas Lambdas (`module-db-backup`) fue generado por la IA a p
 Paso a paso:
 
 1. **Conectarse a una instancia sin bastión ni SSH directo.** Las instancias están en una subnet privada sin IP pública. Como `LabInstanceProfile` incluye permisos de SSM, se puede entrar vía **Session Manager** sin necesidad de claves SSH ni un bastion host:
-   ```bash
-   aws ec2 describe-instances --filters "Name=tag:Name,Values=Obligatorio-EC2" \
-     --query "Reservations[].Instances[].InstanceId" --output text
-   aws ssm start-session --target i-xxxxxxxxxxxxxxxxx
+   ```
+      aws ssm start-session --target i-xxxxxxxxxxxxxxxxx
    ```
 
 2. **Generar carga de CPU**, una de dos formas:
