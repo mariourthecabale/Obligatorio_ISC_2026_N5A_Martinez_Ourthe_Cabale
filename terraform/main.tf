@@ -80,8 +80,6 @@ module "ec2_asg" {
   ec2_security_group_id = module.security_groups.ec2_sg_id
   target_group_arn      = module.alb.target_group_arn
   gitlab_token          = var.gitlab_token
-
-  module "ec2_asg" {
   
   ## Configuración de escalado automático
   min_size         = var.min_size
@@ -97,7 +95,19 @@ module "ec2_asg" {
 
   requests_per_target = var.requests_per_target
   instance_warmup     = var.instance_warmup
-}
+
+  resource "aws_autoscaling_group" "TF-ASG-Obligatorio" {
+  min_size         = var.min_size
+  max_size         = var.max_size
+  desired_capacity = var.desired_capacity
+
+  # Resto...
+
+  lifecycle {
+    ignore_changes = [
+      desired_capacity
+    ]
+  }
 }
 
 ## Variable local para construir la URL de verificación de disponibilidad de la aplicación
