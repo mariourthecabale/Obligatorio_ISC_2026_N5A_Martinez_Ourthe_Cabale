@@ -1,8 +1,3 @@
-## Definición del proveedor de AWS
-provider "aws" {
-  region = var.aws_region
-}
-
 ## Módulo de Networking donde se crean VPC, Subnets, Internet Gateway, NAT Gateway y Route Tables contemplando alta disponibilidad con dos AZs
 module "networking" {
   source = "git::ssh://git@github.com/ISC-2026-Martinez-Ourthe-Cabale/module-networking.git"
@@ -95,25 +90,12 @@ module "ec2_asg" {
 
   requests_per_target = var.requests_per_target
   instance_warmup     = var.instance_warmup
-
-  resource "aws_autoscaling_group" "TF-ASG-Obligatorio" {
-  min_size         = var.min_size
-  max_size         = var.max_size
-  desired_capacity = var.desired_capacity
-
-  # Resto...
-
-  lifecycle {
-    ignore_changes = [
-      desired_capacity
-    ]
-  }
 }
 
 ## Variable local para construir la URL de verificación de disponibilidad de la aplicación
-locals {
+ locals {
   app_ready_url = "${var.app_ready_check_scheme}://${module.alb.alb_dns_name}${var.app_ready_check_path}"
-}
+ }
 
 ## Recurso para esperar a que la aplicación esté lista
 resource "null_resource" "Esperando_por_APP" {
