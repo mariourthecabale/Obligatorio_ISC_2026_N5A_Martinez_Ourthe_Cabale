@@ -2,6 +2,8 @@
 **/.terraform/*
 *.tfstate
 *.tfstate.*
+*.tfvars
+*.tfvars.json
 
 # Terraform crash logs
 crash.log
