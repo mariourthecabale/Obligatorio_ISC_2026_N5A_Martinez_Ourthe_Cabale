@@ -21,7 +21,7 @@
 11. [Outputs](#outputs)
 12. [Consideraciones de seguridad](#consideraciones-de-seguridad)
 13. [Capturas de pruebas realizadas](#-capturas-de-pruebas-realizadas)
-14. [Consultas IA](#Consultas-IA)
+14. [Consultas IA](#-consultas-ia)
 
 ---
 
@@ -517,7 +517,10 @@ Este README contiene capturas de las pruebas que se realizaron pruebas de estré
 Este apartado contiene consultas realizadas a la IA.
 [`Consultas-IA`](./consultasIA/utilización-de-IA.md).
 ---
+
 *Proyecto académico — ISC 2026 — N5A | Martínez, Ourthe-Cabalé*
+
+---
 
 
 
