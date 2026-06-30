@@ -20,6 +20,8 @@
 10. [Variables de entrada](#variables-de-entrada)
 11. [Outputs](#outputs)
 12. [Consideraciones de seguridad](#consideraciones-de-seguridad)
+13. [Capturas de pruebas realizadas](#-capturas-de-pruebas-realizadas)
+14. [Consultas IA](#Consultas-IA)
 
 ---
 
@@ -32,9 +34,13 @@ La aplicación corre en contenedores Docker sobre instancias EC2, la imagen se o
 
 ---
 
-## Diagrama de arquitectura
+## Diagrama de arquitectura general
 
-![Diagrama de arquitectura](./imagenes-doc/diagrama.png)
+![Diagrama de arquitectura general](./imagenes-doc/diagrama.png)
+
+## Diagrama de arquitectura detallado
+
+![Diagrama de arquitectura detallado](./imagenes-doc/solucion_detallada)
 
 **Flujo de tráfico:**
 
@@ -503,8 +509,13 @@ A continuación el detalle completo de todas las variables del módulo raíz:
 ---
 ## 🧪 Capturas de pruebas realizadas
 
-Este repositorio actúa como **orquestador** que consume módulos alojados en la organización [`README_Evidencias`](./imagenes-de-pruebas/README.md).
+Este README contiene capturas de las pruebas que se realizaron pruebas de estrés.
+ [`README_Evidencias`](./imagenes-de-pruebas/README.md).
 
+---
+## 🧪 Consultas IA
+Este apartado contiene consultas realizadas a la IA.
+[`Consultas-IA`](./consultasIA/utilización-de-IA.md).
 ---
 *Proyecto académico — ISC 2026 — N5A | Martínez, Ourthe-Cabalé*
 
