@@ -73,6 +73,8 @@ docker run -d -p 80:80 ... registry.gitlab.com/mourthecabalediaz/app:1.0
 - Diferencia entre `terraform init` y `terraform init -migrate-state`, y si hacía falta usar específicamente ese segundo comando.
 - Cuáles son los pasos correctos para desplegar todos los cambios de la sesión sobre infraestructura que ya estaba desplegada en AWS.
 - Cómo invocar manualmente desde AWS las Lambdas de backup para probarlas sin esperar al horario programado.
+- Dónde ubicar correctamente en el diagrama servicios regionales como Lambda, EventBridge, CloudWatch Logs y S3, diferenciándolos de los recursos desplegados dentro de la VPC, subnets y Availability Zones (Se utilizó diagrama para solución detallada).
+- Qué métricas, alarmas y dashboards de CloudWatch convenía implementar para monitorear ALB, EC2/ASG, RDS, Lambdas de backup y notificaciones mediante SNS.
 ---
 
 ## 5. Dificultades encontradas

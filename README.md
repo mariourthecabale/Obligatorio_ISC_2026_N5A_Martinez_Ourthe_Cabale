@@ -9,7 +9,7 @@
 ## Tabla de contenidos
 
 1. [Descripción general](#descripcion-general)
-2. [Diagrama de arquitectura](#diagrama-de-arquitectura)
+2. [Diagrama de arquitectura general](#diagrama-de-arquitectura-general)
 3. [Servicios de AWS utilizados](#servicios-de-aws-utilizados)
 4. [Datos de la infraestructura](#datos-de-la-infraestructura)
 5. [Firewalling / Security Groups](#firewalling--security-groups)
@@ -40,7 +40,7 @@ La aplicación corre en contenedores Docker sobre instancias EC2, la imagen se o
 
 ## Diagrama de arquitectura detallado
 
-![Diagrama de arquitectura detallado](./imagenes-doc/solucion_detallada)
+![Diagrama de arquitectura detallado](./imagenes-doc/solucion_detallada.png)
 
 **Flujo de tráfico:**
 
