@@ -501,7 +501,11 @@ A continuación el detalle completo de todas las variables del módulo raíz:
 * **Cifrado RDS:** El almacenamiento de la base de datos está cifrado en reposo (`storage_encrypted = true`).
 
 ---
+## 🧪 Capturas de pruebas realizadas
 
+Este repositorio actúa como **orquestador** que consume módulos alojados en la organización [`README_Evidencias`](./imagenes-de-pruebas/README.md).
+
+---
 *Proyecto académico — ISC 2026 — N5A | Martínez, Ourthe-Cabalé*
 
 
