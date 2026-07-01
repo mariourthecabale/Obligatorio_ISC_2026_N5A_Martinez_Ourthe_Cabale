@@ -8,12 +8,12 @@
 
 ## Tabla de contenidos
 
-1. [Descripción general](#descripcion-general)
+1. [Descripción general](#descripción-general)
 2. [Diagrama de arquitectura general](#diagrama-de-arquitectura-general)
 3. [Servicios de AWS utilizados](#servicios-de-aws-utilizados)
 4. [Datos de la infraestructura](#datos-de-la-infraestructura)
 5. [Firewalling / Security Groups](#firewalling--security-groups)
-6. [Módulos Terraform](#modulos-terraform)
+6. [Módulos Terraform](#módulos-terraform)
 7. [Requisitos y dependencias](#requisitos-y-dependencias)
 8. [Estructura del repositorio](#estructura-del-repositorio)
 9. [Instructivo de uso](#instructivo-de-uso)
@@ -377,6 +377,12 @@ Responder `yes` cuando pregunte si copiar el state existente al backend nuevo. *
 Si es la primera vez que se despliega este proyecto (no hay state previo), alcanza con el `terraform init` del paso siguiente.
 
 ### 5. Inicializar Terraform
+Primero nos ubicamos en el repositorio principal:
+
+```bash
+cd ../../
+cd Obligatorio_ISC_2026_N5A_Martinez_Ourthe_Cabale/terraform
+```
 
 Este paso descarga los módulos desde GitHub vía SSH:
 
