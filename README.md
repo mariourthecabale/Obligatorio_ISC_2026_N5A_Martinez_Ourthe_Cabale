@@ -380,7 +380,7 @@ Si es la primera vez que se despliega este proyecto (no hay state previo), alcan
 Primero nos ubicamos en el repositorio principal:
 
 ```bash
-cd ../../
+cd ..
 cd Obligatorio_ISC_2026_N5A_Martinez_Ourthe_Cabale/terraform
 ```
 
